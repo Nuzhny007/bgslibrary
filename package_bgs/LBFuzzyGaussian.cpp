@@ -74,6 +74,7 @@ void LBFuzzyGaussian::process(const cv::Mat &img_input, cv::Mat &img_output, cv:
 
 void LBFuzzyGaussian::saveConfig()
 {
+#if CV_MAJOR_VERSION < 4
   CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_WRITE);
 
   cvWriteInt(fs, "sensitivity", sensitivity);
@@ -83,10 +84,12 @@ void LBFuzzyGaussian::saveConfig()
   cvWriteInt(fs, "showOutput", showOutput);
 
   cvReleaseFileStorage(&fs);
+#endif
 }
 
 void LBFuzzyGaussian::loadConfig()
 {
+#if CV_MAJOR_VERSION < 4
   CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_READ);
 
   sensitivity = cvReadIntByName(fs, nullptr, "sensitivity", 72);
@@ -96,4 +99,5 @@ void LBFuzzyGaussian::loadConfig()
   showOutput = cvReadIntByName(fs, nullptr, "showOutput", true);
 
   cvReleaseFileStorage(&fs);
+#endif
 }

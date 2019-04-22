@@ -95,18 +95,22 @@ void Amber::process(const cv::Mat &img_input, cv::Mat &img_output, cv::Mat &img_
 
 void Amber::saveConfig()
 {
+#if CV_MAJOR_VERSION < 4
   CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_WRITE);
 
   cvWriteInt(fs, "showOutput", showOutput);
 
   cvReleaseFileStorage(&fs);
+#endif
 }
 
 void Amber::loadConfig()
 {
+#if CV_MAJOR_VERSION < 4
   CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_READ);
 
   showOutput = cvReadIntByName(fs, nullptr, "showOutput", false);
 
   cvReleaseFileStorage(&fs);
+#endif
 }

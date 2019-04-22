@@ -75,6 +75,7 @@ void LBAdaptiveSOM::process(const cv::Mat &img_input, cv::Mat &img_output, cv::M
 
 void LBAdaptiveSOM::saveConfig()
 {
+#if CV_MAJOR_VERSION < 4
   CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_WRITE);
 
   cvWriteInt(fs, "sensitivity", sensitivity);
@@ -85,10 +86,12 @@ void LBAdaptiveSOM::saveConfig()
   cvWriteInt(fs, "showOutput", showOutput);
 
   cvReleaseFileStorage(&fs);
+#endif
 }
 
 void LBAdaptiveSOM::loadConfig()
 {
+#if CV_MAJOR_VERSION < 4
   CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_READ);
 
   sensitivity = cvReadIntByName(fs, nullptr, "sensitivity", 75);
@@ -99,4 +102,5 @@ void LBAdaptiveSOM::loadConfig()
   showOutput = cvReadIntByName(fs, 0, "showOutput", true);
 
   cvReleaseFileStorage(&fs);
+#endif
 }

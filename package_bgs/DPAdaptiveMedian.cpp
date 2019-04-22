@@ -87,24 +87,28 @@ void DPAdaptiveMedian::process(const cv::Mat &img_input, cv::Mat &img_output, cv
 
 void DPAdaptiveMedian::saveConfig()
 {
-  CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_WRITE);
+#if CV_MAJOR_VERSION < 4
+    CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_WRITE);
 
-  cvWriteInt(fs, "threshold", threshold);
-  cvWriteInt(fs, "samplingRate", samplingRate);
-  cvWriteInt(fs, "learningFrames", learningFrames);
-  cvWriteInt(fs, "showOutput", showOutput);
+    cvWriteInt(fs, "threshold", threshold);
+    cvWriteInt(fs, "samplingRate", samplingRate);
+    cvWriteInt(fs, "learningFrames", learningFrames);
+    cvWriteInt(fs, "showOutput", showOutput);
 
-  cvReleaseFileStorage(&fs);
+    cvReleaseFileStorage(&fs);
+#endif
 }
 
 void DPAdaptiveMedian::loadConfig()
 {
-  CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_READ);
+#if CV_MAJOR_VERSION < 4
+    CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_READ);
 
-  threshold = cvReadIntByName(fs, nullptr, "threshold", 40);
-  samplingRate = cvReadIntByName(fs, nullptr, "samplingRate", 7);
-  learningFrames = cvReadIntByName(fs, nullptr, "learningFrames", 30);
-  showOutput = cvReadIntByName(fs, nullptr, "showOutput", true);
+    threshold = cvReadIntByName(fs, nullptr, "threshold", 40);
+    samplingRate = cvReadIntByName(fs, nullptr, "samplingRate", 7);
+    learningFrames = cvReadIntByName(fs, nullptr, "learningFrames", 30);
+    showOutput = cvReadIntByName(fs, nullptr, "showOutput", true);
 
-  cvReleaseFileStorage(&fs);
+    cvReleaseFileStorage(&fs);
+#endif
 }

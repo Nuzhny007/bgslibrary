@@ -127,6 +127,7 @@ namespace bgslibrary
 
   void PreProcessor::saveConfig()
   {
+#if CV_MAJOR_VERSION < 4
     CvFileStorage* fs = cvOpenFileStorage("./config/PreProcessor.xml", 0, CV_STORAGE_WRITE);
 
     cvWriteInt(fs, "equalizeHist", equalizeHist);
@@ -134,10 +135,12 @@ namespace bgslibrary
     cvWriteInt(fs, "enableShow", enableShow);
 
     cvReleaseFileStorage(&fs);
+#endif
   }
 
   void PreProcessor::loadConfig()
   {
+#if CV_MAJOR_VERSION < 4
     CvFileStorage* fs = cvOpenFileStorage("./config/PreProcessor.xml", 0, CV_STORAGE_READ);
 
     equalizeHist = cvReadIntByName(fs, 0, "equalizeHist", false);
@@ -145,5 +148,6 @@ namespace bgslibrary
     enableShow = cvReadIntByName(fs, 0, "enableShow", true);
 
     cvReleaseFileStorage(&fs);
+#endif
   }
 }

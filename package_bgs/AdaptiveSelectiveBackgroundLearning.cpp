@@ -105,26 +105,30 @@ void AdaptiveSelectiveBackgroundLearning::process(const cv::Mat &img_input_, cv:
 
 void AdaptiveSelectiveBackgroundLearning::saveConfig()
 {
-  CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_WRITE);
+#if CV_MAJOR_VERSION < 4
+    CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_WRITE);
 
-  cvWriteInt(fs, "learningFrames", learningFrames);
-  cvWriteReal(fs, "alphaLearn", alphaLearn);
-  cvWriteReal(fs, "alphaDetection", alphaDetection);
-  cvWriteInt(fs, "threshold", threshold);
-  cvWriteInt(fs, "showOutput", showOutput);
+    cvWriteInt(fs, "learningFrames", learningFrames);
+    cvWriteReal(fs, "alphaLearn", alphaLearn);
+    cvWriteReal(fs, "alphaDetection", alphaDetection);
+    cvWriteInt(fs, "threshold", threshold);
+    cvWriteInt(fs, "showOutput", showOutput);
 
-  cvReleaseFileStorage(&fs);
+    cvReleaseFileStorage(&fs);
+#endif
 }
 
 void AdaptiveSelectiveBackgroundLearning::loadConfig()
 {
-  CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), 0, CV_STORAGE_READ);
+#if CV_MAJOR_VERSION < 4
+    CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), 0, CV_STORAGE_READ);
 
-  learningFrames = cvReadIntByName(fs, nullptr, "learningFrames", 90);
-  alphaLearn = cvReadRealByName(fs, nullptr, "alphaLearn", 0.05);
-  alphaDetection = cvReadRealByName(fs, nullptr, "alphaDetection", 0.05);
-  threshold = cvReadIntByName(fs, nullptr, "threshold", 25);
-  showOutput = cvReadIntByName(fs, nullptr, "showOutput", true);
+    learningFrames = cvReadIntByName(fs, nullptr, "learningFrames", 90);
+    alphaLearn = cvReadRealByName(fs, nullptr, "alphaLearn", 0.05);
+    alphaDetection = cvReadRealByName(fs, nullptr, "alphaDetection", 0.05);
+    threshold = cvReadIntByName(fs, nullptr, "threshold", 25);
+    showOutput = cvReadIntByName(fs, nullptr, "showOutput", true);
 
-  cvReleaseFileStorage(&fs);
+    cvReleaseFileStorage(&fs);
+#endif
 }

@@ -92,6 +92,7 @@ void WeightedMovingMean::process(const cv::Mat &img_input, cv::Mat &img_output, 
 
 void WeightedMovingMean::saveConfig()
 {
+#if CV_MAJOR_VERSION < 4
   CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_WRITE);
 
   cvWriteInt(fs, "enableWeight", enableWeight);
@@ -100,10 +101,12 @@ void WeightedMovingMean::saveConfig()
   cvWriteInt(fs, "showOutput", showOutput);
 
   cvReleaseFileStorage(&fs);
+#endif
 }
 
 void WeightedMovingMean::loadConfig()
 {
+#if CV_MAJOR_VERSION < 4
   CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_READ);
 
   enableWeight = cvReadIntByName(fs, nullptr, "enableWeight", true);
@@ -112,4 +115,5 @@ void WeightedMovingMean::loadConfig()
   showOutput = cvReadIntByName(fs, nullptr, "showOutput", true);
 
   cvReleaseFileStorage(&fs);
+#endif
 }

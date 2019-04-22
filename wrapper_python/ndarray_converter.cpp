@@ -102,7 +102,11 @@ public:
         return u;
     }
 
+#if CV_MAJOR_VERSION < 4
     UMatData* allocate(int dims0, const int* sizes, int type, void* data, size_t* step, int flags, UMatUsageFlags usageFlags) const
+#else
+    UMatData* allocate(int dims0, const int* sizes, int type, void* data, size_t* step, AccessFlag flags, UMatUsageFlags usageFlags) const
+#endif
     {
         if( data != 0 )
         {
@@ -130,11 +134,15 @@ public:
             CV_Error_(Error::StsError, ("The numpy array of typenum=%d, ndims=%d can not be created", typenum, dims));
         return allocate(o, dims0, sizes, type, step);
     }
-
+#if CV_MAJOR_VERSION < 4
     bool allocate(UMatData* u, int accessFlags, UMatUsageFlags usageFlags) const
+#else
+    bool allocate(UMatData* u, AccessFlag accessFlags, UMatUsageFlags usageFlags) const
+#endif
     {
         return stdAllocator->allocate(u, accessFlags, usageFlags);
     }
+
 
     void deallocate(UMatData* u) const
     {

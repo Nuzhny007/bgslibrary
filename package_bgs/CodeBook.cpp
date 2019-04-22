@@ -200,24 +200,28 @@ void CodeBook::fg_cb(const cv::Mat& frame, cv::Mat& fg)
 
 void CodeBook::saveConfig()
 {
-  CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_WRITE);
+#if CV_MAJOR_VERSION < 4
+    CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_WRITE);
 
-  cvWriteInt(fs, "alpha", alpha);
-  cvWriteReal(fs, "beta", beta);
-  cvWriteInt(fs, "learningFrames", learningFrames);
-  cvWriteInt(fs, "showOutput", showOutput);
+    cvWriteInt(fs, "alpha", alpha);
+    cvWriteReal(fs, "beta", beta);
+    cvWriteInt(fs, "learningFrames", learningFrames);
+    cvWriteInt(fs, "showOutput", showOutput);
 
-  cvReleaseFileStorage(&fs);
+    cvReleaseFileStorage(&fs);
+#endif
 }
 
 void CodeBook::loadConfig()
 {
-  CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_READ);
+#if CV_MAJOR_VERSION < 4
+    CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_READ);
 
-  alpha = cvReadIntByName(fs, nullptr, "alpha", DEFAULT_ALPHA);
-  beta = cvReadRealByName(fs, nullptr, "beta", DEFAULT_BETA);
-  learningFrames = cvReadIntByName(fs, nullptr, "learningFrames", DEFAULT_LEARNFRAMES);
-  showOutput = cvReadIntByName(fs, nullptr, "showOutput", true);
+    alpha = cvReadIntByName(fs, nullptr, "alpha", DEFAULT_ALPHA);
+    beta = cvReadRealByName(fs, nullptr, "beta", DEFAULT_BETA);
+    learningFrames = cvReadIntByName(fs, nullptr, "learningFrames", DEFAULT_LEARNFRAMES);
+    showOutput = cvReadIntByName(fs, nullptr, "showOutput", true);
 
-  cvReleaseFileStorage(&fs);
+    cvReleaseFileStorage(&fs);
+#endif
 }

@@ -87,6 +87,7 @@ void DPPratiMediod::process(const cv::Mat &img_input, cv::Mat &img_output, cv::M
 
 void DPPratiMediod::saveConfig()
 {
+#if CV_MAJOR_VERSION < 4
   CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_WRITE);
 
   cvWriteInt(fs, "threshold", threshold);
@@ -96,10 +97,12 @@ void DPPratiMediod::saveConfig()
   cvWriteInt(fs, "showOutput", showOutput);
 
   cvReleaseFileStorage(&fs);
+#endif
 }
 
 void DPPratiMediod::loadConfig()
 {
+#if CV_MAJOR_VERSION < 4
   CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_READ);
 
   threshold = cvReadIntByName(fs, nullptr, "threshold", 30);
@@ -109,4 +112,5 @@ void DPPratiMediod::loadConfig()
   showOutput = cvReadIntByName(fs, nullptr, "showOutput", true);
 
   cvReleaseFileStorage(&fs);
+#endif
 }

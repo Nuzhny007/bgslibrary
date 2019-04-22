@@ -84,6 +84,7 @@ void VuMeter::process(const cv::Mat &img_input, cv::Mat &img_output, cv::Mat &im
 
 void VuMeter::saveConfig()
 {
+#if CV_MAJOR_VERSION < 4
   CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_WRITE);
 
   cvWriteInt(fs, "enableFilter", enableFilter);
@@ -95,10 +96,12 @@ void VuMeter::saveConfig()
   cvWriteInt(fs, "showOutput", showOutput);
 
   cvReleaseFileStorage(&fs);
+#endif
 }
 
 void VuMeter::loadConfig()
 {
+#if CV_MAJOR_VERSION < 4
   CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_READ);
 
   enableFilter = cvReadIntByName(fs, nullptr, "enableFilter", true);
@@ -110,4 +113,5 @@ void VuMeter::loadConfig()
   showOutput = cvReadIntByName(fs, nullptr, "showOutput", true);
 
   cvReleaseFileStorage(&fs);
+#endif
 }

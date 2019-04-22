@@ -17,6 +17,9 @@ along with BGSLibrary.  If not, see <http://www.gnu.org/licenses/>.
 #include <iostream>
 #include <vector>
 #include <opencv2/opencv.hpp>
+#if CV_MAJOR_VERSION >= 4
+#include <opencv2/imgcodecs/legacy/constants_c.h>
+#endif
 
 #include "package_bgs/bgslibrary.h"
 

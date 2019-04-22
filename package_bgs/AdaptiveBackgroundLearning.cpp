@@ -14,6 +14,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with BGSLibrary.  If not, see <http://www.gnu.org/licenses/>.
 */
+#include <opencv2/core/core_c.h>
 #include "AdaptiveBackgroundLearning.h"
 
 using namespace bgslibrary::algorithms;
@@ -84,6 +85,7 @@ void AdaptiveBackgroundLearning::process(const cv::Mat &img_input, cv::Mat &img_
 
 void AdaptiveBackgroundLearning::saveConfig()
 {
+#if CV_MAJOR_VERSION < 4
   CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), 0, CV_STORAGE_WRITE);
 
   cvWriteReal(fs, "alpha", alpha);
@@ -93,10 +95,12 @@ void AdaptiveBackgroundLearning::saveConfig()
   cvWriteInt(fs, "showOutput", showOutput);
 
   cvReleaseFileStorage(&fs);
+#endif
 }
 
 void AdaptiveBackgroundLearning::loadConfig()
 {
+#if CV_MAJOR_VERSION < 4
   CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_READ);
 
   alpha = cvReadRealByName(fs, nullptr, "alpha", 0.05);
@@ -106,4 +110,5 @@ void AdaptiveBackgroundLearning::loadConfig()
   showOutput = cvReadIntByName(fs, nullptr, "showOutput", true);
 
   cvReleaseFileStorage(&fs);
+#endif
 }

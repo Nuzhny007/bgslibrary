@@ -74,6 +74,7 @@ void LBMixtureOfGaussians::process(const cv::Mat &img_input, cv::Mat &img_output
 
 void LBMixtureOfGaussians::saveConfig()
 {
+#if CV_MAJOR_VERSION < 4
   CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_WRITE);
 
   cvWriteInt(fs, "sensitivity", sensitivity);
@@ -83,10 +84,12 @@ void LBMixtureOfGaussians::saveConfig()
   cvWriteInt(fs, "showOutput", showOutput);
 
   cvReleaseFileStorage(&fs);
+#endif
 }
 
 void LBMixtureOfGaussians::loadConfig()
 {
+#if CV_MAJOR_VERSION < 4
   CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_READ);
 
   sensitivity = cvReadIntByName(fs, nullptr, "sensitivity", 81);
@@ -96,4 +99,5 @@ void LBMixtureOfGaussians::loadConfig()
   showOutput = cvReadIntByName(fs, nullptr, "showOutput", true);
 
   cvReleaseFileStorage(&fs);
+#endif
 }

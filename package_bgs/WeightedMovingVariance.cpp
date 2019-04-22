@@ -129,6 +129,7 @@ cv::Mat WeightedMovingVariance::computeWeightedVariance(const cv::Mat &img_input
 
 void WeightedMovingVariance::saveConfig()
 {
+#if CV_MAJOR_VERSION < 4
   CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_WRITE);
 
   cvWriteInt(fs, "enableWeight", enableWeight);
@@ -137,10 +138,12 @@ void WeightedMovingVariance::saveConfig()
   cvWriteInt(fs, "showOutput", showOutput);
 
   cvReleaseFileStorage(&fs);
+#endif
 }
 
 void WeightedMovingVariance::loadConfig()
 {
+#if CV_MAJOR_VERSION < 4
   CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_READ);
 
   enableWeight = cvReadIntByName(fs, nullptr, "enableWeight", true);
@@ -149,4 +152,5 @@ void WeightedMovingVariance::loadConfig()
   showOutput = cvReadIntByName(fs, nullptr, "showOutput", true);
 
   cvReleaseFileStorage(&fs);
+#endif
 }

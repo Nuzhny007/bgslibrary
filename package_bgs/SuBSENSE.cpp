@@ -67,6 +67,7 @@ void SuBSENSE::process(const cv::Mat &img_input, cv::Mat &img_output, cv::Mat &i
 
 void SuBSENSE::saveConfig()
 {
+#if CV_MAJOR_VERSION < 4
   CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_WRITE);
 
   cvWriteReal(fs, "fRelLBSPThreshold", fRelLBSPThreshold);
@@ -78,10 +79,12 @@ void SuBSENSE::saveConfig()
   cvWriteInt(fs, "showOutput", showOutput);
 
   cvReleaseFileStorage(&fs);
+#endif
 }
 
 void SuBSENSE::loadConfig()
 {
+#if CV_MAJOR_VERSION < 4
   CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_READ);
 
   fRelLBSPThreshold = cvReadRealByName(fs, nullptr, "fRelLBSPThreshold", BGSSUBSENSE_DEFAULT_LBSP_REL_SIMILARITY_THRESHOLD);
@@ -93,4 +96,5 @@ void SuBSENSE::loadConfig()
   showOutput = cvReadIntByName(fs, nullptr, "showOutput", true);
 
   cvReleaseFileStorage(&fs);
+#endif
 }

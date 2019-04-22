@@ -86,6 +86,7 @@ void T2FGMM_UM::process(const cv::Mat &img_input, cv::Mat &img_output, cv::Mat &
 
 void T2FGMM_UM::saveConfig()
 {
+#if CV_MAJOR_VERSION < 4
   CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_WRITE);
 
   cvWriteReal(fs, "threshold", threshold);
@@ -96,10 +97,12 @@ void T2FGMM_UM::saveConfig()
   cvWriteInt(fs, "showOutput", showOutput);
 
   cvReleaseFileStorage(&fs);
+#endif
 }
 
 void T2FGMM_UM::loadConfig()
 {
+#if CV_MAJOR_VERSION < 4
   CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_READ);
 
   threshold = cvReadRealByName(fs, nullptr, "threshold", 9.0);
@@ -110,4 +113,5 @@ void T2FGMM_UM::loadConfig()
   showOutput = cvReadIntByName(fs, nullptr, "showOutput", true);
 
   cvReleaseFileStorage(&fs);
+#endif
 }

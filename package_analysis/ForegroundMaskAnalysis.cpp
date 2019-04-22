@@ -84,21 +84,25 @@ namespace bgslibrary
 
   void ForegroundMaskAnalysis::saveConfig()
   {
+#if CV_MAJOR_VERSION < 4
     CvFileStorage* fs = cvOpenFileStorage("./config/ForegroundMaskAnalysis.xml", 0, CV_STORAGE_WRITE);
 
     cvWriteInt(fs, "stopAt", stopAt);
     cvWriteString(fs, "img_ref_path", img_ref_path.c_str());
 
     cvReleaseFileStorage(&fs);
+#endif
   }
 
   void ForegroundMaskAnalysis::loadConfig()
   {
+#if CV_MAJOR_VERSION < 4
     CvFileStorage* fs = cvOpenFileStorage("./config/ForegroundMaskAnalysis.xml", 0, CV_STORAGE_READ);
 
     stopAt = cvReadIntByName(fs, 0, "stopAt", 0);
     img_ref_path = cvReadStringByName(fs, 0, "img_ref_path", "");
 
     cvReleaseFileStorage(&fs);
+#endif
   }
 }

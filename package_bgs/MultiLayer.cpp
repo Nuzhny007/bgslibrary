@@ -249,6 +249,7 @@ void MultiLayer::process(const cv::Mat &img_input, cv::Mat &img_output, cv::Mat 
 
 void MultiLayer::saveConfig()
 {
+#if CV_MAJOR_VERSION < 4
   CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_WRITE);
 
   cvWriteString(fs, "preloadModel", bg_model_preload.c_str());
@@ -286,10 +287,12 @@ void MultiLayer::saveConfig()
   cvWriteInt(fs, "showOutput", showOutput);
 
   cvReleaseFileStorage(&fs);
+#endif
 }
 
 void MultiLayer::loadConfig()
 {
+#if CV_MAJOR_VERSION < 4
   CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_READ);
 
   bg_model_preload = cvReadStringByName(fs, nullptr, "preloadModel", "");
@@ -327,4 +330,5 @@ void MultiLayer::loadConfig()
   showOutput = cvReadIntByName(fs, nullptr, "showOutput", true);
 
   cvReleaseFileStorage(&fs);
+#endif
 }

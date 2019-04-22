@@ -138,6 +138,7 @@ void DPTexture::process(const cv::Mat &img_input, cv::Mat &img_output, cv::Mat &
 
 void DPTexture::saveConfig()
 {
+#if CV_MAJOR_VERSION < 4
   CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_WRITE);
 
   //cvWriteReal(fs, "alpha", alpha);
@@ -145,10 +146,12 @@ void DPTexture::saveConfig()
   cvWriteInt(fs, "showOutput", showOutput);
 
   cvReleaseFileStorage(&fs);
+#endif
 }
 
 void DPTexture::loadConfig()
 {
+#if CV_MAJOR_VERSION < 4
   CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_READ);
 
   //alpha = cvReadRealByName(fs, nullptr, "alpha", 1e-6f);
@@ -156,4 +159,5 @@ void DPTexture::loadConfig()
   showOutput = cvReadIntByName(fs, nullptr, "showOutput", true);
 
   cvReleaseFileStorage(&fs);
+#endif
 }

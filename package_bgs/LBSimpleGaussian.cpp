@@ -73,6 +73,7 @@ void LBSimpleGaussian::process(const cv::Mat &img_input, cv::Mat &img_output, cv
 
 void LBSimpleGaussian::saveConfig()
 {
+#if CV_MAJOR_VERSION < 4
   CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_WRITE);
 
   cvWriteInt(fs, "sensitivity", sensitivity);
@@ -81,10 +82,12 @@ void LBSimpleGaussian::saveConfig()
   cvWriteInt(fs, "showOutput", showOutput);
 
   cvReleaseFileStorage(&fs);
+#endif
 }
 
 void LBSimpleGaussian::loadConfig()
 {
+#if CV_MAJOR_VERSION < 4
   CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_READ);
 
   sensitivity = cvReadIntByName(fs, nullptr, "sensitivity", 66);
@@ -93,4 +96,5 @@ void LBSimpleGaussian::loadConfig()
   showOutput = cvReadIntByName(fs, nullptr, "showOutput", true);
 
   cvReleaseFileStorage(&fs);
+#endif
 }

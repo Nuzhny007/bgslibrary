@@ -16,6 +16,9 @@ along with BGSLibrary.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "VideoCapture.h"
 #include <opencv2/highgui/highgui_c.h>
+#if CV_MAJOR_VERSION >= 4
+#include <opencv2/videoio/videoio_c.h>
+#endif
 
 namespace bgslibrary
 {
@@ -263,6 +266,7 @@ namespace bgslibrary
 
   void VideoCapture::saveConfig()
   {
+#if CV_MAJOR_VERSION < 4
     CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), 0, CV_STORAGE_WRITE);
 
     cvWriteInt(fs, "stopAt", stopAt);
@@ -277,10 +281,12 @@ namespace bgslibrary
     cvWriteInt(fs, "showOutput", showOutput);
 
     cvReleaseFileStorage(&fs);
+#endif
   }
 
   void VideoCapture::loadConfig()
   {
+#if CV_MAJOR_VERSION < 4
     CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_READ);
 
     stopAt = cvReadIntByName(fs, nullptr, "stopAt", 0);
@@ -295,5 +301,6 @@ namespace bgslibrary
     showOutput = cvReadIntByName(fs, nullptr, "showOutput", true);
 
     cvReleaseFileStorage(&fs);
+#endif
   }
 }

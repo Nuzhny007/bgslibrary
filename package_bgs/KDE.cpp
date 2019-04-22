@@ -102,6 +102,7 @@ void KDE::process(const cv::Mat &img_input, cv::Mat &img_output, cv::Mat &img_bg
 
 void KDE::saveConfig()
 {
+#if CV_MAJOR_VERSION < 4
   CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_WRITE);
 
   cvWriteInt(fs, "framesToLearn", framesToLearn);
@@ -114,10 +115,12 @@ void KDE::saveConfig()
   cvWriteInt(fs, "showOutput", showOutput);
 
   cvReleaseFileStorage(&fs);
+#endif
 }
 
 void KDE::loadConfig()
 {
+#if CV_MAJOR_VERSION < 4
   CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_READ);
 
   framesToLearn = cvReadIntByName(fs, nullptr, "framesToLearn", 10);
@@ -130,4 +133,5 @@ void KDE::loadConfig()
   showOutput = cvReadIntByName(fs, nullptr, "showOutput", true);
 
   cvReleaseFileStorage(&fs);
+#endif
 }

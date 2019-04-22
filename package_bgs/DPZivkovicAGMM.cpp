@@ -84,6 +84,7 @@ void DPZivkovicAGMM::process(const cv::Mat &img_input, cv::Mat &img_output, cv::
 
 void DPZivkovicAGMM::saveConfig()
 {
+#if CV_MAJOR_VERSION < 4
   CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_WRITE);
 
   cvWriteReal(fs, "threshold", threshold);
@@ -92,10 +93,12 @@ void DPZivkovicAGMM::saveConfig()
   cvWriteInt(fs, "showOutput", showOutput);
 
   cvReleaseFileStorage(&fs);
+#endif
 }
 
 void DPZivkovicAGMM::loadConfig()
 {
+#if CV_MAJOR_VERSION < 4
   CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_READ);
 
   threshold = cvReadRealByName(fs, nullptr, "threshold", 25.0f);
@@ -104,4 +107,5 @@ void DPZivkovicAGMM::loadConfig()
   showOutput = cvReadIntByName(fs, nullptr, "showOutput", true);
 
   cvReleaseFileStorage(&fs);
+#endif
 }

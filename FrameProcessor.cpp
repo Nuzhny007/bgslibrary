@@ -559,6 +559,7 @@ namespace bgslibrary
 
   void FrameProcessor::saveConfig()
   {
+#if CV_MAJOR_VERSION < 4
     CvFileStorage* fs = cvOpenFileStorage("./config/FrameProcessor.xml", 0, CV_STORAGE_WRITE);
 
     cvWriteString(fs, "tictoc", tictoc.c_str());
@@ -621,10 +622,12 @@ namespace bgslibrary
     cvWriteInt(fs, "enableCodeBook", enableCodeBook);
 
     cvReleaseFileStorage(&fs);
+#endif
   }
 
   void FrameProcessor::loadConfig()
   {
+#if CV_MAJOR_VERSION < 4
     CvFileStorage* fs = cvOpenFileStorage("./config/FrameProcessor.xml", 0, CV_STORAGE_READ);
 
     tictoc = cvReadStringByName(fs, 0, "tictoc", "");
@@ -687,5 +690,6 @@ namespace bgslibrary
     enableCodeBook = cvReadIntByName(fs, 0, "enableCodeBook", false);
 
     cvReleaseFileStorage(&fs);
+#endif
   }
 }

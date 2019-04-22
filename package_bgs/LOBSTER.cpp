@@ -69,6 +69,7 @@ void LOBSTER::process(const cv::Mat &img_input, cv::Mat &img_output, cv::Mat &im
 
 void LOBSTER::saveConfig()
 {
+#if CV_MAJOR_VERSION < 4
   CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_WRITE);
 
   cvWriteReal(fs, "fRelLBSPThreshold", fRelLBSPThreshold);
@@ -80,10 +81,12 @@ void LOBSTER::saveConfig()
   cvWriteInt(fs, "showOutput", showOutput);
 
   cvReleaseFileStorage(&fs);
+#endif
 }
 
 void LOBSTER::loadConfig()
 {
+#if CV_MAJOR_VERSION < 4
   CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_READ);
 
   fRelLBSPThreshold = cvReadRealByName(fs, nullptr, "fRelLBSPThreshold", BGSLOBSTER_DEFAULT_LBSP_REL_SIMILARITY_THRESHOLD);
@@ -95,4 +98,5 @@ void LOBSTER::loadConfig()
   showOutput = cvReadIntByName(fs, nullptr, "showOutput", true);
 
   cvReleaseFileStorage(&fs);
+#endif
 }

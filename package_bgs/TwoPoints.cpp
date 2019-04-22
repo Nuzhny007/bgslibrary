@@ -91,6 +91,7 @@ void TwoPoints::process(const cv::Mat &img_input, cv::Mat &img_output, cv::Mat &
 
 void TwoPoints::saveConfig()
 {
+#if CV_MAJOR_VERSION < 4
   CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_WRITE);
 
   cvWriteInt(fs, "matchingThreshold", matchingThreshold);
@@ -98,10 +99,12 @@ void TwoPoints::saveConfig()
   cvWriteInt(fs, "showOutput", showOutput);
 
   cvReleaseFileStorage(&fs);
+#endif
 }
 
 void TwoPoints::loadConfig()
 {
+#if CV_MAJOR_VERSION < 4
   CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_READ);
 
   matchingThreshold = cvReadRealByName(fs, nullptr, "matchingThreshold", DEFAULT_MATCH_THRESH);
@@ -109,4 +112,5 @@ void TwoPoints::loadConfig()
   showOutput = cvReadIntByName(fs, nullptr, "showOutput", false);
 
   cvReleaseFileStorage(&fs);
+#endif
 }

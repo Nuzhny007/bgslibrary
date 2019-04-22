@@ -44,6 +44,7 @@ using namespace ck;
 
 #include <opencv2/opencv.hpp>
 #include <opencv2/imgproc.hpp>
+#include <opencv2/imgproc/imgproc_c.h>
 
 #include "MEHistogram.hpp"
 #include "MEImage.hpp"
@@ -1022,10 +1023,15 @@ void MotionDetection::OpticalFlowCorrection()
     PointsStatus = (char*)cvAlloc(HUOFPointsNumber);
   }
 
+#if CV_MAJOR_VERSION < 4
   cvCalcOpticalFlowPyrLK(PreviousGray, CurrentGray, HUOFPrevPyramid, HUOFPyramid,
     HUOFPoints[0], HUOFPoints[1], HUOFPointsNumber,
     cvSize(10, 10), 3, PointsStatus, NULL,
     cvTermCriteria(CV_TERMCRIT_ITER | CV_TERMCRIT_EPS, 5, 1), 0);
+#else
+  assert(0);
+  //cv::calcOpticalFlowPyrLK()
+#endif
 
   // Count the distances of the tracked points
   int **Distances = new int*[HUOFPointsNumber];

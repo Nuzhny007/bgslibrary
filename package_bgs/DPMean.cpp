@@ -85,6 +85,7 @@ void DPMean::process(const cv::Mat &img_input, cv::Mat &img_output, cv::Mat &img
 
 void DPMean::saveConfig()
 {
+#if CV_MAJOR_VERSION < 4
   CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_WRITE);
 
   cvWriteInt(fs, "threshold", threshold);
@@ -93,10 +94,12 @@ void DPMean::saveConfig()
   cvWriteInt(fs, "showOutput", showOutput);
 
   cvReleaseFileStorage(&fs);
+#endif
 }
 
 void DPMean::loadConfig()
 {
+#if CV_MAJOR_VERSION < 4
   CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_READ);
 
   threshold = cvReadIntByName(fs, nullptr, "threshold", 2700);
@@ -105,4 +108,5 @@ void DPMean::loadConfig()
   showOutput = cvReadIntByName(fs, nullptr, "showOutput", true);
 
   cvReleaseFileStorage(&fs);
+#endif
 }

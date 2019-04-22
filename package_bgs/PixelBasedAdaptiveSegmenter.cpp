@@ -77,6 +77,7 @@ void PixelBasedAdaptiveSegmenter::process(const cv::Mat &img_input, cv::Mat &img
 
 void PixelBasedAdaptiveSegmenter::saveConfig()
 {
+#if CV_MAJOR_VERSION < 4
   CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_WRITE);
 
   cvWriteInt(fs, "enableInputBlur", enableInputBlur);
@@ -98,10 +99,12 @@ void PixelBasedAdaptiveSegmenter::saveConfig()
   cvWriteInt(fs, "showOutput", showOutput);
 
   cvReleaseFileStorage(&fs);
+#endif
 }
 
 void PixelBasedAdaptiveSegmenter::loadConfig()
 {
+#if CV_MAJOR_VERSION < 4
   CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_READ);
 
   enableInputBlur = cvReadIntByName(fs, nullptr, "enableInputBlur", true);
@@ -123,4 +126,5 @@ void PixelBasedAdaptiveSegmenter::loadConfig()
   showOutput = cvReadIntByName(fs, nullptr, "showOutput", true);
 
   cvReleaseFileStorage(&fs);
+#endif
 }

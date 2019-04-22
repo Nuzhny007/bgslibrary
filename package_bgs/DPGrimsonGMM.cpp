@@ -85,6 +85,7 @@ void DPGrimsonGMM::process(const cv::Mat &img_input, cv::Mat &img_output, cv::Ma
 
 void DPGrimsonGMM::saveConfig()
 {
+#if CV_MAJOR_VERSION < 4
   CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_WRITE);
 
   cvWriteReal(fs, "threshold", threshold);
@@ -93,10 +94,12 @@ void DPGrimsonGMM::saveConfig()
   cvWriteInt(fs, "showOutput", showOutput);
 
   cvReleaseFileStorage(&fs);
+#endif
 }
 
 void DPGrimsonGMM::loadConfig()
 {
+#if CV_MAJOR_VERSION < 4
   CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_READ);
 
   threshold = cvReadRealByName(fs, nullptr, "threshold", 9.0);
@@ -105,4 +108,5 @@ void DPGrimsonGMM::loadConfig()
   showOutput = cvReadIntByName(fs, nullptr, "showOutput", true);
 
   cvReleaseFileStorage(&fs);
+#endif
 }

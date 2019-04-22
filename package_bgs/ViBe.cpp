@@ -73,6 +73,7 @@ void ViBe::process(const cv::Mat &img_input, cv::Mat &img_output, cv::Mat &img_b
 
 void ViBe::saveConfig()
 {
+#if CV_MAJOR_VERSION < 4
   CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_WRITE);
 
   //cvWriteInt(fs, "numberOfSamples", numberOfSamples);
@@ -82,10 +83,12 @@ void ViBe::saveConfig()
   cvWriteInt(fs, "showOutput", showOutput);
 
   cvReleaseFileStorage(&fs);
+#endif
 }
 
 void ViBe::loadConfig()
 {
+#if CV_MAJOR_VERSION < 4
   CvFileStorage* fs = cvOpenFileStorage(config_xml.c_str(), nullptr, CV_STORAGE_READ);
 
   //numberOfSamples = cvReadIntByName(fs, nullptr, "numberOfSamples", DEFAULT_NUM_SAMPLES);
@@ -95,4 +98,5 @@ void ViBe::loadConfig()
   showOutput = cvReadIntByName(fs, nullptr, "showOutput", false);
 
   cvReleaseFileStorage(&fs);
+#endif
 }
